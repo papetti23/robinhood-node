@@ -6,6 +6,7 @@
 [![npm](https://img.shields.io/npm/dm/robinhood.svg)](https://www.npmjs.com/package/robinhood)
 [![Coverage Status](https://coveralls.io/repos/github/aurbano/robinhood-node/badge.svg?branch=master)](https://coveralls.io/github/aurbano/robinhood-node?branch=master)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Faurbano%2Frobinhood-node.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Faurbano%2Frobinhood-node?ref=badge_shield)
+[![TypeScript](https://badges.frapsoft.com/typescript/code/typescript.svg?v=101)](https://www.typescriptlang.org/)
 
 NodeJS Framework to make trades with the private [Robinhood](https://www.robinhood.com/) API. Using this API is not encouraged, since it's not officially available and it has been reverse engineered.
 See @Sanko's [Unofficial Documentation](https://github.com/sanko/Robinhood) for more information.
@@ -48,6 +49,7 @@ FYI [Robinhood's Terms and Conditions](https://brokerage-static.s3.amazonaws.com
     * [`news(symbol, callback)`](#newssymbol-callback)
     * [`tag(tag, callback)`](#tagtag-callback)
     * [`popularity(symbol, callback)`](#popularitysymbol-callback)
+    * [`options_positions`](#options_positions)
 * [Contributors](#contributors)
 
 <!-- toc stop -->
@@ -67,36 +69,6 @@ $ npm install robinhood --save
 ## Usage
 
 To authenticate, you can either use your username and password to the Robinhood app or a previously authenticated Robinhood api token:
-
-### Username & Password
-```js
-//The username and password you use to sign into the robinhood app.
-
-var credentials = {
-    username: '',
-    password: ''
-};
-```
-
-### MFA code
-```js
-
-var Robinhood = robinhood({
-        username : '',
-        password : ''
-    }, (data) => {
-        if (data && data.mfa_required) {
-            var mfa_code = '123456'; // set mfa_code here
-
-            Robinhood.set_mfa_code(mfa_code, () => {
-                console.log(Robinhood.auth_token());
-            });
-        }
-        else {
-            console.log(Robinhood.auth_token());
-        }
-    })
-```
 
 ### Robinhood API Auth Token
 ```js
@@ -123,6 +95,45 @@ var Robinhood = require('robinhood')(credentials, function(){
 });
 ```
 
+### Username & Password
+
+This type of login may have been deprecated in favor of the API Token above.
+
+```js
+//The username and password you use to sign into the robinhood app.
+
+var credentials = {
+    username: '',
+    password: ''
+};
+```
+
+### MFA code
+
+Since the addition of the API Auth Token login, MFA may not work anymore. If you have any information regarding
+this please open an issue to discuss it.
+
+```js
+
+var Robinhood = robinhood({
+        username : '',
+        password : ''
+    }, (data) => {
+        if (data && data.mfa_required) {
+            var mfa_code = '123456'; // set mfa_code here
+
+            Robinhood.set_mfa_code(mfa_code, () => {
+                console.log(Robinhood.auth_token());
+            });
+        }
+        else {
+            console.log(Robinhood.auth_token());
+        }
+    })
+```
+
+
+
 ## API
 
 Before using these methods, make sure you have initialized Robinhood using the snippet above.
@@ -139,7 +150,7 @@ var Robinhood = require('robinhood')(credentials, function(){
 ```
 
 ### `expire_token()`
-Expire the current authenticated Robinhood api token (logout). 
+Expire the current authenticated Robinhood api token (logout).
 
 > **NOTE:** After expiring a token you will need to reinstantiate the package with username & password in order to get a new token!
 
@@ -344,7 +355,7 @@ var Robinhood = require('robinhood')(credentials, function(){
 Get the earnings information. Option should be one of:
 
 ```typescript
-let option = { range: X } // X is an integer between 1 and 21. This returns all 
+let option = { range: X } // X is an integer between 1 and 21. This returns all
                           // expected earnings within a number of calendar days.
 ```
 OR
@@ -372,10 +383,10 @@ var Robinhood = require('robinhood')(credentials, function(){
 
 ### `orders(options, callback)`
 
-Get the user's orders information.  
+Get the user's orders information.
 
 #### Retreive a set of orders
-Send options hash (optional) to limit to specific instrument and/or earliest date of orders.  
+Send options hash (optional) to limit to specific instrument and/or earliest date of orders.
 
 ```typescript
 // optional options hash.  If no hash is sent, all orders will be returned.
@@ -401,7 +412,7 @@ var Robinhood = require('robinhood')(credentials, function(){
 #### Retreive a particular order
 Send the id of the order to retreive the data for a specific order.
 ```typescript
-let order_id = "string_identifier"; // e.g., id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 
+let order_id = "string_identifier"; // e.g., id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
 ```
 
 ```typescript
@@ -754,7 +765,7 @@ var Robinhood = require('robinhood')(credentials, function(){
 })
 ```
 
-### `historicals(symbol, intv, span, callback)`    
+### `historicals(symbol, intv, span, callback)`
 
 ```typescript
 var Robinhood = require('robinhood')(credentials, function(){
@@ -767,7 +778,7 @@ var Robinhood = require('robinhood')(credentials, function(){
         }else{
             console.log("got historicals");
             console.log(body);
-            //             
+            //
             //    { quote: 'https://api.robinhood.com/quotes/AAPL/',
             //      symbol: 'AAPL',
             //      interval: '5minute',
@@ -863,6 +874,52 @@ var Robinhood = require('robinhood')(credentials, function() {
 });
 ```
 
+### `options_positions`
+
+Obtain list of options positions
+
+```typescript
+var credentials = require("../credentials.js")();
+var Robinhood = require('robinhood')(credentials, function() {
+    Robinhood.options_positions((err, response, body) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log(body);
+        }
+    });
+});
+
+// {
+//   "created_at": "2018-10-12T17:05:18.195533Z",
+//   "direction": "credit",
+//   "intraday_quantity": "35.0000",
+//   "average_open_price": "56.5143",
+//   "chain": "https://api.robinhood.com/options/chains/103ce21e-4921-47ed-a263-e05d2d3d5e99/",
+//   "updated_at": "2018-10-12T19:11:02.984831Z",
+//   "symbol": "XLF",
+//   "trade_value_multiplier": "100.0000",
+//   "intraday_direction": "credit",
+//   "strategy": "short_put",
+//   "intraday_average_open_price": "56.5143",
+//   "legs": [
+//     {
+//       "strike_price": "26.5000",
+//       "option": "https://api.robinhood.com/options/instruments/fa512b6e-c121-4ff4-b8aa-9aa2974514b7/",
+//       "expiration_date": "2018-10-19",
+//       "option_type": "put",
+//       "id": "214e0f90-4416-427a-b119-e1a96d8e9da7",
+//       "position_type": "short",
+//       "position": "https://api.robinhood.com/options/positions/e18fda89-6ff2-443f-af71-cd780e558049/",
+//       "ratio_quantity": 1
+//     }
+//   ],
+//   "id": "e4e6cabe-2328-42f3-b4d9-d78da695d2ec",
+//   "quantity": "35.0000"
+// }
+
+```
+
 ### news(symbol, callback)
 
 Return news about a symbol.
@@ -884,6 +941,9 @@ Alejandro U. Alvarez ([@aurbano](https://github.com/aurbano))
 * Jason Truluck ([@jasontruluck](https://github.com/jasontruluck))
 * Matthew Herron ([@swimclan](https://github.com/swimclan))
 * Chris Dituri ([@cdituri](https://github.com/cdituri))
+* John Murphy ([@chiefsmurph](https://github.com/chiefsmurph))
+* Ryan Hendricks ([@ryanhendricks](https://github.com/ryanhendricks))
+* Patrick Michaelsen ([@prmichaelsen](https://github.com/prmichaelsen))
 
 ------------------
 

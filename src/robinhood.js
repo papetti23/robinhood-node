@@ -51,6 +51,7 @@ function RobinhoodWebApi(opts, callback) {
         user_employment: "user/employment/",
         user_investment_profile: "user/investment_profile/",
 
+        options_positions: "options/aggregate_positions/",
         watchlists: 'watchlists/',
         positions: 'positions/',
         fundamentals: 'fundamentals/',
@@ -119,6 +120,7 @@ function RobinhoodWebApi(opts, callback) {
     _request.post({
       uri: _apiUrl + _endpoints.login,
       form: {
+
          grant_type: "password",
          scope: "internal",
          client_id: _clientId,
@@ -126,6 +128,7 @@ function RobinhoodWebApi(opts, callback) {
          password: _private.password,
          username: _private.username
        }
+
     }, function(err, httpResponse, body) {
       if(err) {
         throw (err);
@@ -134,6 +137,7 @@ function RobinhoodWebApi(opts, callback) {
            throw new Error(
                "token not found " + JSON.stringify(httpResponse)
            )
+
 
       }
 
@@ -175,8 +179,6 @@ function RobinhoodWebApi(opts, callback) {
    * |      Define API methods        | *
    * +--------------------------------+ */
 
-
-
   api.auth_token = function() {
     return _private.auth_token;
   };
@@ -186,10 +188,12 @@ function RobinhoodWebApi(opts, callback) {
   api.expire_token = function(callback) {
     return _request.post({
       uri: _apiUrl + _endpoints.logout,
-        form: {
-          client_id: _clientId,
-          token: _private.refresh_token
-        }
+
+      form: {
+        client_id: _clientId,
+        token: _private.refresh_token
+      }
+
     }, callback);
   };
 
@@ -201,8 +205,7 @@ function RobinhoodWebApi(opts, callback) {
 
   api.fundamentals = function(ticker, callback){
     return _request.get({
-        uri: _apiUrl + _endpoints.fundamentals,
-        qs: { 'symbols': ticker }
+		uri: _apiUrl + [_endpoints.fundamentals,'/'].join(String(ticker).toUpperCase()),
       }, callback);
   };
 
@@ -336,6 +339,12 @@ function RobinhoodWebApi(opts, callback) {
     }, callback);
   };
 
+  api.options_positions = function (callback) {
+    return _request.get({
+      uri: _apiUrl + _endpoints.options_positions,
+    }, callback);
+  };
+
   api.news = function(symbol, callback){
     return _request.get({
       uri: _apiUrl + [_endpoints.news,'/'].join(symbol)
@@ -343,6 +352,11 @@ function RobinhoodWebApi(opts, callback) {
   };
 
 
+  api.tag = function(tag, callback){
+    return _request.get({
+      uri: _apiUrl + _endpoints.tag + tag
+    }, callback);
+  };
 
   api.markets = function(callback){
     return _request.get({
