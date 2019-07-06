@@ -78,13 +78,15 @@ function RobinhoodWebApi(opts, callback) {
     _private.password = _.has(_options, 'password') ? _options.password : null;
     _private.auth_token = _.has(_options, 'token') ? _options.token : null;
     _private.headers = {
-        'Accept': '*/*',
-        'Accept-Encoding': 'gzip, deflate',
-        'Accept-Language': 'en;q=1, fr;q=0.9, de;q=0.8, ja;q=0.7, nl;q=0.6, it;q=0.5',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-        'Connection': 'keep-alive',
-        'X-Robinhood-API-Version': '1.152.0',
-        'User-Agent': 'Robinhood/5.32.0 (com.robinhood.release.Robinhood; build:3814; iOS 10.3.3)'
+      'Accept': '*/*',
+      'Accept-Encoding': 'br, gzip, deflate',
+      'Accept-Language': 'en-us',
+      'Content-Length':239,
+      'Content-Type': 'application/json',
+      'Connection': 'keep-alive',
+      'X-Robinhood-API-Version': '1.275.0',
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.3 Safari/605.1.15'
+
     };
     _setHeaders();
     if (!_private.auth_token) {
@@ -119,15 +121,17 @@ function RobinhoodWebApi(opts, callback) {
 
     _request.post({
       uri: _apiUrl + _endpoints.login,
-      form: {
-
-         grant_type: "password",
-         scope: "internal",
-         client_id: _clientId,
-         // expires_in: 86400,
-         password: _private.password,
-         username: _private.username
-       }
+      body: {
+        grant_type: "password",
+        scope: "internal",
+        client_id: _clientId,
+        expires_in: 86400,
+        password: _private.password,
+        username: _private.username,
+        device_token: 'e839fe23-d8d1-4ef4-bef9-751e3d442fec'
+      },
+      json:true,
+      headers: _private.headers
 
     }, function(err, httpResponse, body) {
       if(err) {
