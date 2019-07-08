@@ -146,8 +146,8 @@ function RobinhoodWebApi(opts, callback) {
   json: true };
 
   _request(options, function (error, response, body) {
-      if(err) {
-        throw (err);
+      if(error) {
+        throw (error);
       }
       if (!body.access_token) {
            throw new Error(
