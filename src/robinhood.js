@@ -119,21 +119,33 @@ function RobinhoodWebApi(opts, callback) {
   function _login(callback){
 
 
-    _request.post({
-      uri: _apiUrl + _endpoints.login,
-      body: {
-        grant_type: "password",
-        scope: "internal",
-        client_id: _clientId,
-        expires_in: 86400,
-        password: _private.password,
-        username: _private.username,
-        device_token: 'e839fe23-d8d1-4ef4-bef9-751e3d442fec'
-      },
-      json:true,
-      headers: _private.headers
+    let options = { method: 'POST',
+  url: 'https://api.robinhood.com/oauth2/token/',
+  headers:
+   { 'cache-control': 'no-cache',
+     'Cache-Control': 'no-cache',
+     'X-Robinhood-API-Version': '1.275.0',
+     Connection: 'keep-alive',
+     'Accept-Encoding': 'br, gzip, deflate',
+     Referer: 'https://robinhood.com/',
+     'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+     Host: 'api.robinhood.com',
+     'Accept-Language': 'en-us',
+     'Content-Length': '239',
+     Origin: 'https://robinhood.com',
+     'Content-Type': 'application/json',
+     Accept: '*/*' },
+  body:
+   { grant_type: 'password',
+     scope: 'internal',
+     client_id: process.env.CLIENT_ID,
+     expires_in: 86400,
+     device_token: process.env.DEVICE_TOKEN,
+     username: _private.username,
+     password: _private.password },
+  json: true };
 
-    }, function(err, httpResponse, body) {
+  _request(options, function (error, response, body) {
       if(err) {
         throw (err);
       }
