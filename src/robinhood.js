@@ -151,7 +151,7 @@ function RobinhoodWebApi(opts, callback) {
       }
       if (!body.access_token) {
            throw new Error(
-               "token not found " + JSON.stringify(httpResponse)
+               "token not found " + JSON.stringify(response)
            )
 
 
