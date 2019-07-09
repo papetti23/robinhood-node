@@ -65,8 +65,8 @@ function RobinhoodWebApi(opts, callback) {
     _private = {
       session : {},
       account: null,
-      username : null,
-      password : null,
+      username : process.env.ROBIN_UNAME,
+      password : process.env.ROBIN_PASS,
       headers : null,
       auth_token : null,
       refresh_token: null
@@ -81,11 +81,11 @@ function RobinhoodWebApi(opts, callback) {
       'Accept': '*/*',
       'Accept-Encoding': 'br, gzip, deflate',
       'Accept-Language': 'en-us',
-      'Content-Length':239,
+      //'Content-Length':239,
       'Content-Type': 'application/json',
       'Connection': 'keep-alive',
       'X-Robinhood-API-Version': '1.275.0',
-    //  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.3 Safari/605.1.15'
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.3 Safari/605.1.15'
 
     };
     _setHeaders();
@@ -118,7 +118,7 @@ function RobinhoodWebApi(opts, callback) {
 
   function _login(callback){
 
-    
+
     let options = { method: 'POST',
   url: 'https://api.robinhood.com/oauth2/token/',
   headers:
@@ -141,12 +141,12 @@ function RobinhoodWebApi(opts, callback) {
      client_id: process.env.CLIENT_ID,
      expires_in: 86400,
      device_token: process.env.DEVICE_TOKEN,
-     username: _private.username,
-     password: _private.password },
+     username: process.env.ROBIN_UNAME,
+     password: process.env.ROBIN_PASS },
   json: true };
 
   _request(options, function (error, response, body) {
-
+    console.log(error,body)
       if(error) {
         throw (error);
       }
