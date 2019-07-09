@@ -85,7 +85,7 @@ function RobinhoodWebApi(opts, callback) {
       'Content-Type': 'application/json',
       'Connection': 'keep-alive',
       'X-Robinhood-API-Version': '1.275.0',
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.3 Safari/605.1.15'
+    //  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0.3 Safari/605.1.15'
 
     };
     _setHeaders();
@@ -118,7 +118,7 @@ function RobinhoodWebApi(opts, callback) {
 
   function _login(callback){
 
-
+    
     let options = { method: 'POST',
   url: 'https://api.robinhood.com/oauth2/token/',
   headers:
@@ -131,7 +131,7 @@ function RobinhoodWebApi(opts, callback) {
      'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
      Host: 'api.robinhood.com',
      'Accept-Language': 'en-us',
-     'Content-Length': '239',
+     //'Content-Length': '239',
      Origin: 'https://robinhood.com',
      'Content-Type': 'application/json',
      Accept: '*/*' },
@@ -146,6 +146,7 @@ function RobinhoodWebApi(opts, callback) {
   json: true };
 
   _request(options, function (error, response, body) {
+
       if(error) {
         throw (error);
       }
