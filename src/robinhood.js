@@ -57,7 +57,9 @@ function RobinhoodWebApi(opts, callback) {
         fundamentals: 'fundamentals/',
         sp500_up: 'midlands/movers/sp500/?direction=up',
         sp500_down: 'midlands/movers/sp500/?direction=down',
-        news: 'midlands/news/'
+        news: 'midlands/news/',
+ 	tag: 'midlands/tags/tag/',
+	ratings: 'midlands/ratings/'
     },
     _clientId = 'c82SH0WZOsabOXGP2sxqcj34FxkvfnWRZBKlBjFS',
     _isInit = false,
@@ -423,6 +425,13 @@ function RobinhoodWebApi(opts, callback) {
   api.url = function (url,callback){
     return _request.get({
       uri:url
+    },callback);
+  };
+
+  api.ratings = function (instruments,callback){
+
+    return _request.get({
+      uri:_apiUrl + _endpoints.ratings + '?ids='querystring.stringify(instruments.join(','))
     },callback);
   };
 
