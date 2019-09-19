@@ -431,7 +431,7 @@ function RobinhoodWebApi(opts, callback) {
   api.ratings = function (instruments,callback){
 
     return _request.get({
-      uri:_apiUrl + _endpoints.ratings + '?ids='querystring.stringify(instruments.join(','))
+      uri:_apiUrl + _endpoints.ratings + '?ids='+querystring.stringify(instruments.join(','))
     },callback);
   };
 
