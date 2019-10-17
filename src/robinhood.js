@@ -11,7 +11,7 @@
 var request = require('request');
 var Promise = require('promise');
 var _ = require('lodash');
-var queryString = require('query-string');
+var querystring = require('query-string');
 
 function RobinhoodWebApi(opts, callback) {
 
