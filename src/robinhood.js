@@ -35,6 +35,7 @@ function RobinhoodWebApi(opts, callback) {
         dividends:  'dividends/',
         edocuments: 'documents/',
         instruments:  'instruments/',
+        describe_instruments: '/instruments/?ids=',
         margin_upgrade:  'margin/upgrades/',
         markets:  'markets/',
         notifications:  'notifications/',
@@ -234,6 +235,16 @@ function RobinhoodWebApi(opts, callback) {
         qs: {'query': symbol.toUpperCase()}
       }, callback);
   };
+
+  api.describe_instruments = function(instrumend_ids,callback){
+
+
+    return _request.get({
+      uri:_apiUrl + _endpoints.describe_instruments + encodeURIComponent(instruments.join(','))
+    },callback);
+
+
+  }
 
   api.popularity = function(symbol, callback){
     return api.quote_data(symbol, function (error, response, body) {
