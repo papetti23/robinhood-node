@@ -44,6 +44,7 @@ function RobinhoodWebApi(opts, callback) {
         cancel_order: 'orders/',      //API expects https://api.robinhood.com/orders/{{orderId}}/cancel/
         password_reset: 'password_reset/request/',
         quotes: 'quotes/',
+        market_quotes: 'marketdata/quotes/',
         document_requests:  'upload/document_requests/',
         user: 'user/',
 
@@ -266,6 +267,17 @@ function RobinhoodWebApi(opts, callback) {
     return _request.get({
         uri: _apiUrl + _endpoints.quotes,
         qs: { 'symbols': symbol.toUpperCase() }
+      }, callback);
+  };
+
+  api.market_quotes = function(instruments, callback){
+
+
+
+  let query_params= instruments.map(inst=> 'https://api.robinhood.com/instruments/'+inst)
+    return _request.get({
+        uri: _apiUrl + _endpoints.market_quotes,
+        qs: { 'instruments': query_params.join(',') }
       }, callback);
   };
 
