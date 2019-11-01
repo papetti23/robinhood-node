@@ -240,7 +240,7 @@ function RobinhoodWebApi(opts, callback) {
 
 
     return _request.get({
-      uri:_apiUrl + _endpoints.describe_instruments + encodeURIComponent(instruments.join(','))
+      uri:_apiUrl + _endpoints.describe_instruments + encodeURIComponent(instrumend_ids.join(','))
     },callback);
 
 
