@@ -274,7 +274,7 @@ function RobinhoodWebApi(opts, callback) {
 
 
 
-  let query_params= instruments.map(inst=> 'https://api.robinhood.com/instruments/'+inst)
+  let query_params= instruments.map(inst=> 'https://api.robinhood.com/instruments/'+inst+'/')
     return _request.get({
         uri: _apiUrl + _endpoints.market_quotes,
         qs: { 'instruments': query_params.join(',') }
